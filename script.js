@@ -24,44 +24,48 @@ function showAlert(data) {
 }
 
 // Listen for StreamElements events
-se.on('follow', (data) => {
-    showAlert({
-        name: data.name,
-        message: 'just followed!',
-        image: data.avatar
-    });
-});
-
-se.on('subscription', (data) => {
-    showAlert({
-        name: data.name,
-        message: `subscribed for ${data.amount} months!`,
-        image: data.avatar
-    });
-});
-
-se.on('resub', (data) => {
-    showAlert({
-        name: data.name,
-        message: `resubscribed for ${data.amount} months!`,
-        image: data.avatar
-    });
-});
-
-se.on('gift', (data) => {
-    showAlert({
-        name: data.name,
-        message: `gifted ${data.amount} subscriptions!`,
-        image: data.avatar
-    });
-});
-
-se.on('donation', (data) => {
-    showAlert({
-        name: data.name,
-        message: `donated $${data.amount}!`,
-        image: data.avatar
-    });
+window.addEventListener('onEventReceived', function(obj) {
+    const data = obj.detail.event;
+    
+    if (obj.detail.listener === 'follow') {
+        showAlert({
+            name: data.name,
+            message: 'just followed!',
+            image: data.avatar
+        });
+    }
+    
+    if (obj.detail.listener === 'subscriber-latest') {
+        showAlert({
+            name: data.name,
+            message: `subscribed for ${data.amount} months!`,
+            image: data.avatar
+        });
+    }
+    
+    if (obj.detail.listener === 'resubscriber-latest') {
+        showAlert({
+            name: data.name,
+            message: `resubscribed for ${data.amount} months!`,
+            image: data.avatar
+        });
+    }
+    
+    if (obj.detail.listener === 'subgift-latest') {
+        showAlert({
+            name: data.name,
+            message: `gifted ${data.amount} subscriptions!`,
+            image: data.avatar
+        });
+    }
+    
+    if (obj.detail.listener === 'tip-latest') {
+        showAlert({
+            name: data.name,
+            message: `donated $${data.amount}!`,
+            image: data.avatar
+        });
+    }
 });
 
 // Initialize the overlay
